@@ -25,3 +25,7 @@ Bundled fonts (SIL Open Font License 1.1, see the license files next to them):
   Inter (web/INTER-LICENSE.txt, fonts/LICENSE.txt)
   Cormorant Garamond (web/CORMORANT-LICENSE.txt)
   Crimson Pro (web/CRIMSON-LICENSE.txt)
+  Marcellus (web/MARCELLUS-LICENSE.txt)
+  Poppins (web/POPPINS-LICENSE.txt)
+  Archivo (web/ARCHIVO-LICENSE.txt)
+  Great Vibes (web/GREAT-VIBES-LICENSE.txt)

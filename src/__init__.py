@@ -19,6 +19,7 @@ from __future__ import annotations
 import datetime
 import html
 import os
+import re
 import sys
 
 from aqt import gui_hooks, mw
@@ -46,6 +47,7 @@ DEFAULTS = {
     "tema": "moderno_escuro",
     "cor_destaque": "",
     "mostrar_saudacao": True,
+    "harmonizar_cartao": True,
     "barra_de_titulo_colorida": True,
 }
 
@@ -93,6 +95,7 @@ TXT = {
     "um": ("1 cartão esperando por você hoje.", "1 card waiting for you today."),
     "varios": ("{n} cartões esperando por você hoje.", "{n} cards waiting for you today."),
     "novos": ("Novos", "New"),
+    "bons_estudos": ("bons estudos!", "happy studying!"),
     "aprendendo": ("Aprendendo", "Learning"),
     "revisar": ("Revisar", "Review"),
 }
@@ -208,6 +211,43 @@ def _old_money_noite(acc: str) -> dict:
     }
 
 
+def _caal(acc: str) -> dict:
+    """CAAL institucional: papel claro, verde-floresta (design system CAAL, tema light)."""
+    return {
+        "FG": "#1b201c", "FG_SUBTLE": "#535e50", "FG_DISABLED": "#98a196", "FG_FAINT": "#c9d0c6",
+        "FG_LINK": "#29692c",
+        "CANVAS": "#f0eee8", "CANVAS_ELEVATED": "#fdfdfd", "CANVAS_INSET": "#ffffff",
+        "CANVAS_OVERLAY": "#fdfdfd", "CANVAS_CODE": "#ffffff", "CANVAS_GLASS": "rgba(253, 253, 253, 0.6)",
+        "BORDER": "#d3d8cf", "BORDER_SUBTLE": "#e2e5de", "BORDER_STRONG": "#b5beb1", "BORDER_FOCUS": acc,
+        "BUTTON_BG": "#fdfdfd", "BUTTON_GRADIENT_START": "#ffffff", "BUTTON_GRADIENT_END": "#f5f4f0",
+        "BUTTON_HOVER_BORDER": "#57966f", "BUTTON_DISABLED": "#ededed",
+        "SCROLLBAR_BG": "#c9d0c6", "SCROLLBAR_BG_HOVER": "#99ccaa", "SCROLLBAR_BG_ACTIVE": "#57966f",
+        "SHADOW": "#dcdfd8", "SHADOW_INSET": "#dcdfd8", "SHADOW_SUBTLE": "#ebece7",
+        "HIGHLIGHT_BG": "#99ccaa", "HIGHLIGHT_FG": "#1b201c",
+        "SELECTED_BG": "#d3e8d8", "SELECTED_FG": "#1b201c",
+        "STATE_NEW": "#3a74c2", "STATE_LEARN": "#b5651d", "STATE_REVIEW": "#29692c",
+    }
+
+
+def _caal_handson(acc: str) -> dict:
+    """CAAL eventos / Hands On: preto, verde neon (design system CAAL, tema dark)."""
+    C = "#0f1111"
+    return {
+        "FG": "#f3f5f2", "FG_SUBTLE": "#a9b3ad", "FG_DISABLED": "#5d6661", "FG_FAINT": "#333a36",
+        "FG_LINK": "#5be38a",
+        "CANVAS": C, "CANVAS_ELEVATED": "#1a1c1c", "CANVAS_INSET": "#0b0c0c",
+        "CANVAS_OVERLAY": "#1f1f1f", "CANVAS_CODE": "#0b0c0c", "CANVAS_GLASS": "rgba(31, 31, 31, 0.6)",
+        "BORDER": "#2e2e30", "BORDER_SUBTLE": "#232525", "BORDER_STRONG": "#3d3f40", "BORDER_FOCUS": "#20c07c",
+        "BUTTON_BG": "#1f1f1f", "BUTTON_GRADIENT_START": "#262828", "BUTTON_GRADIENT_END": "#1f1f1f",
+        "BUTTON_HOVER_BORDER": "#20c07c", "BUTTON_DISABLED": "#161717",
+        "SCROLLBAR_BG": "#2e2e30", "SCROLLBAR_BG_HOVER": "#0c3021", "SCROLLBAR_BG_ACTIVE": "#20c07c",
+        "SHADOW": "#050606", "SHADOW_INSET": "#050606", "SHADOW_SUBTLE": "#0a0b0b",
+        "HIGHLIGHT_BG": "#0c3021", "HIGHLIGHT_FG": "#f3f5f2",
+        "SELECTED_BG": "#12402c", "SELECTED_FG": "#f3f5f2",
+        "STATE_NEW": "#92bbf8", "STATE_LEARN": "#d5fc76", "STATE_REVIEW": "#5be38a",
+    }
+
+
 TEMAS = {
     "moderno_escuro": {
         "nome": ("Moderno Escuro", "Modern Dark"), "escuro": True, "par": "moderno_claro",
@@ -232,7 +272,7 @@ TEMAS = {
         "destaque": "#1f3d2b", "sobre_destaque": "#f4ecd8", "ouro": "#a8854a",
         "paleta": _old_money, "familia": "oldmoney",
         "raio": ("4px", "6px", "8px"),
-        "fonte_qt": "Crimson AM", "fonte_qt_extra": 1.5,
+        "fonte_qt": "Crimson AM", "fonte_qt_extra": 0.75,
         "fonte_web": '"Crimson AM", "Georgia", serif',
         "fonte_titulo": '"Cormorant AM", "Crimson AM", "Georgia", serif',
     },
@@ -241,12 +281,30 @@ TEMAS = {
         "destaque": "#c4a46b", "sobre_destaque": "#1a140a", "ouro": "#c4a46b",
         "paleta": _old_money_noite, "familia": "oldmoney",
         "raio": ("4px", "6px", "8px"),
-        "fonte_qt": "Crimson AM", "fonte_qt_extra": 1.5,
+        "fonte_qt": "Crimson AM", "fonte_qt_extra": 0.75,
         "fonte_web": '"Crimson AM", "Georgia", serif',
         "fonte_titulo": '"Cormorant AM", "Crimson AM", "Georgia", serif',
     },
+    "caal": {
+        "nome": ("CAAL Institucional", "CAAL Institutional"), "escuro": False, "par": "caal_handson",
+        "destaque": "#29692c", "sobre_destaque": "#ffffff", "ouro": "#57966f",
+        "paleta": _caal, "familia": "caal",
+        "raio": ("8px", "12px", "16px"),
+        "fonte_qt": "Poppins AM", "fonte_qt_extra": 0.0,
+        "fonte_web": '"Poppins AM", "Poppins", "Montserrat", system-ui, sans-serif',
+        "fonte_titulo": '"Marcellus AM", "Marcellus", "Cinzel", Georgia, serif',
+    },
+    "caal_handson": {
+        "nome": ("CAAL Hands On", "CAAL Hands On"), "escuro": True, "par": "caal",
+        "destaque": "#5be38a", "sobre_destaque": "#0f1111", "ouro": "#20c07c",
+        "paleta": _caal_handson, "familia": "handson",
+        "raio": ("10px", "16px", "20px"),
+        "fonte_qt": "Archivo AM", "fonte_qt_extra": 0.0,
+        "fonte_web": '"Archivo AM", "Archivo", "Helvetica Neue", Arial, sans-serif',
+        "fonte_titulo": '"Archivo AM", "Archivo", "Helvetica Neue", Arial, sans-serif',
+    },
 }
-ORDEM = ["moderno_escuro", "moderno_claro", "old_money", "old_money_noite"]
+ORDEM = ["moderno_escuro", "moderno_claro", "old_money", "old_money_noite", "caal", "caal_handson"]
 
 
 def nome_tema(tid: str) -> str:
@@ -396,12 +454,12 @@ QTableView {{ border: 1px solid {subtle}; border-radius: {r2}; outline: none;
 QHeaderView {{ background: transparent; border: none; }}
 QHeaderView::section {{ background: {canvas}; color: {fg_sub}; border: none;
     border-bottom: 1px solid {subtle}; border-right: 1px solid {subtle};
-    padding: 6px 8px; font-weight: 600; }}
+    padding: 4px 4px; font-weight: 500; }}
 QHeaderView::section:last {{ border-right: none; }}
 QTableCornerButton::section {{ background: {canvas}; border: none; }}
 
 QTabWidget::pane {{ border: 1px solid {subtle}; border-radius: {r2}; top: -1px; }}
-QTabBar::tab {{ padding: 6px 16px; margin: 0 2px; border-radius: {r1}; border: 1px solid transparent; }}
+QTabBar::tab {{ padding: 5px 12px; margin: 0 1px; border-radius: {r1}; border: 1px solid transparent; }}
 QTabBar::tab:selected {{ background: {acc}; color: {on_acc}; border-color: {acc}; }}
 QTabBar::tab:!selected {{ background: transparent; border-color: transparent; color: {fg_sub}; }}
 QTabBar::tab:!selected:hover {{ background: {hover_bg}; color: {fg}; }}
@@ -415,7 +473,10 @@ QScrollBar::handle:pressed {{ background: {sba}; }}
 QScrollBar::add-line, QScrollBar::sub-line {{ width: 0; height: 0; border: none; background: none; }}
 QScrollBar::add-page, QScrollBar::sub-page {{ background: none; }}
 
-QGroupBox {{ border-radius: {r2}; border: 1px solid {subtle}; background: {elev}; }}
+QGroupBox {{ border-radius: {r2}; border: 1px solid {subtle}; background: {elev};
+    margin-top: 16px; padding: 14px 8px 8px 8px; }}
+QGroupBox::title {{ subcontrol-origin: margin; subcontrol-position: top left;
+    left: 12px; top: 0px; padding: 0 4px; color: {fg}; font-weight: 600; }}
 QProgressBar {{ border: 1px solid {subtle}; border-radius: {r1}; background: {elev};
     text-align: center; min-height: 14px; }}
 QProgressBar::chunk {{ background: {acc}; border-radius: {r1}; }}
@@ -447,7 +508,8 @@ def apply_font() -> None:
     global _fonts_loaded, _base_font
     app = mw.app
     if not _fonts_loaded:
-        for fn in ("Inter-Regular.ttf", "Inter-Bold.ttf", "Crimson-Regular.ttf", "Crimson-Bold.ttf"):
+        for fn in ("Inter-Regular.ttf", "Inter-Bold.ttf", "Crimson-Regular.ttf", "Crimson-Bold.ttf",
+                   "Poppins-Regular.ttf", "Poppins-Bold.ttf", "Archivo-Regular.ttf", "Archivo-Bold.ttf"):
             QFontDatabase.addApplicationFont(os.path.join(HERE, "fonts", fn))
         _fonts_loaded = True
         _base_font = QFont(app.font())
@@ -767,6 +829,8 @@ def _hero() -> str:
     saud = _saudacao() + (f", {html.escape(nome)}" if nome else "")
     return f"""
     <section class="am-hero">
+      <div class="am-mark" aria-hidden="true">CAAL</div>
+      <div class="am-script" aria-hidden="true">{tr("bons_estudos")}</div>
       <div class="am-date">{data}</div>
       <h1 class="am-title">{saud}</h1>
       <div class="am-rule"><span>◆</span></div>
@@ -789,6 +853,29 @@ def on_webview_will_set_content(web_content, context) -> None:
 
 
 gui_hooks.webview_will_set_content.append(on_webview_will_set_content)
+
+
+_FUNDO_BRANCO = re.compile(
+    r"\.card\s*\{[^}]*background(?:-color)?\s*:\s*(?:white|#fff\b|#ffffff\b|rgb\(\s*255\s*,\s*255\s*,\s*255\s*\))",
+    re.IGNORECASE,
+)
+
+
+def on_card_will_show(text: str, card, kind: str) -> str:
+    """Nos temas claros, o fundo branco padrão do cartão destoava do papel do tema.
+    Só troca o branco padrão: cartões com outra cor de fundo ficam como estão."""
+    try:
+        if T()["escuro"] or not cfg().get("harmonizar_cartao", True):
+            return text
+        css = card.note_type().get("css", "")
+        if _FUNDO_BRANCO.search(css):
+            return text + "<style>.card{background-color:var(--canvas)!important}</style>"
+    except Exception:
+        pass
+    return text
+
+
+gui_hooks.card_will_show.append(on_card_will_show)
 
 
 def on_page_styled(webview) -> None:

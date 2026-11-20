@@ -2,7 +2,7 @@
 
 ![Anki Moderno](images/01_hero.png)
 
-**Anki Moderno** restyles the *entire* Anki interface — deck list, reviewer, browser, card editor, statistics, deck options, menus and every dialog — with four themes you can switch live from **Tools → Themes**.
+**Anki Moderno** restyles the *entire* Anki interface — deck list, reviewer, browser, card editor, statistics, deck options, menus and every dialog — with six themes you can switch live from **Tools → Themes**.
 
 | Theme | Look |
 |---|---|
@@ -10,6 +10,8 @@
 | **Modern Light** | Clean and bright |
 | **Old Money** | Ivory paper, racing green, gold rules, classic serifs |
 | **Old Money Night** | Dark green leather, brass details |
+| **CAAL Institucional** | Paper, forest green, Marcellus titles (CAAL design system) |
+| **CAAL Hands On** | Black, neon green glow, Archivo (CAAL design system) |
 
 ![Four themes](images/02_four_themes.png)
 ![Theme switching](images/theme_switch.gif)
@@ -28,7 +30,7 @@ Restart Anki, then open **Tools → Themes**.
 - Restyled toolbar, overview, "Study Now", "Show Answer" and colored answer buttons
 - Browser, Add/Edit editor, statistics, deck options, Preferences and all dialogs
 - Native Qt widgets: menus, buttons, inputs, tables, tabs, scrollbars, tooltips
-- Bundled fonts (Inter, Cormorant Garamond, Crimson Pro)
+- Bundled fonts (Inter, Cormorant Garamond, Crimson Pro, Marcellus, Poppins, Archivo, Great Vibes)
 - Windows 11 title bars follow the theme
 - English and Portuguese interface text (follows Anki's language)
 - **Your note types are never modified**
@@ -39,7 +41,8 @@ Tools → Add-ons → Anki Moderno → Config
 
 | Key | Default | Meaning |
 |---|---|---|
-| `tema` | `"moderno_escuro"` | `moderno_escuro`, `moderno_claro`, `old_money`, `old_money_noite` |
+| `tema` | `"moderno_escuro"` | `moderno_escuro`, `moderno_claro`, `old_money`, `old_money_noite`, `caal`, `caal_handson` |
+| `harmonizar_cartao` | `true` | Light themes: blend the default white card background into the theme |
 | `cor_destaque` | `""` | Empty = theme accent. Any hex (e.g. `"#3b82f6"`) overrides it |
 | `mostrar_saudacao` | `true` | Greeting above the deck list |
 | `barra_de_titulo_colorida` | `true` | Colored title bars on Windows 11 |
@@ -74,4 +77,4 @@ Code: MIT. Bundled fonts: SIL Open Font License 1.1 (license files included next
 
 ### 🇧🇷 Português
 
-O **Anki Moderno** redesenha a interface inteira do Anki com quatro temas (Moderno Escuro, Moderno Claro, Old Money e Old Money Noite). Troque em **Ferramentas → Temas**, sem reiniciar. O visual dos seus cartões não é alterado. Funciona no Anki 24.06 ou mais novo.
+O **Anki Moderno** redesenha a interface inteira do Anki com seis temas (Moderno Escuro, Moderno Claro, Old Money, Old Money Noite, CAAL Institucional e CAAL Hands On). Troque em **Ferramentas → Temas**, sem reiniciar. O visual dos seus cartões não é alterado. Funciona no Anki 24.06 ou mais novo.

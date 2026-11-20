@@ -34,6 +34,15 @@
 @font-face { font-family: "Cormorant AM"; src: url("cormorant-600.woff2") format("woff2"); font-weight: 500 600; }
 @font-face { font-family: "Cormorant AM"; src: url("cormorant-700.woff2") format("woff2"); font-weight: 700 900; }
 
+@font-face { font-family: "Marcellus AM"; src: url("marcellus.woff2") format("woff2"); font-weight: 400 700; }
+@font-face { font-family: "Poppins AM"; src: url("poppins-400.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Poppins AM"; src: url("poppins-500.woff2") format("woff2"); font-weight: 500; }
+@font-face { font-family: "Poppins AM"; src: url("poppins-600.woff2") format("woff2"); font-weight: 600; }
+@font-face { font-family: "Poppins AM"; src: url("poppins-700.woff2") format("woff2"); font-weight: 700 900; }
+@font-face { font-family: "Archivo AM"; src: url("archivo.woff2") format("woff2"); font-weight: 100 900; font-style: normal; }
+@font-face { font-family: "Archivo AM"; src: url("archivo-italic.woff2") format("woff2"); font-weight: 100 900; font-style: italic; }
+@font-face { font-family: "Great Vibes AM"; src: url("greatvibes.woff2") format("woff2"); font-weight: 400; }
+
 /* ---------- tokens (vêm da paleta central da extensão) ---------- */
 body.am {
   --am-bg: var(--canvas);
@@ -602,3 +611,283 @@ body.am-page.am-theme-oldmoney h1:not(:is([contenteditable] *)) {
   font-size: 30px !important; font-weight: 600 !important; letter-spacing: 0;
 }
 body.am-page.am-theme-oldmoney { font-size: 16px; }
+
+/* ==========================================================
+   CORREÇÕES DE LAYOUT (1.1.0)
+   ========================================================== */
+/* barra superior: a borda de baixo da pílula era cortada */
+body.am-toolbar { padding-bottom: 6px !important; }
+body.am-toolbar .toolbar { margin-top: 2px !important; }
+
+/* linha vazia (alvo de arrastar) entre o cabeçalho e o primeiro baralho */
+body.am-decks tr.top-level-drag-row td {
+  height: 6px !important; padding: 0 !important;
+  font-size: 0 !important; line-height: 0 !important; border: none !important;
+}
+
+/* tabela com a mesma largura dos cartões de resumo */
+body.am-decks .am-decktable,
+body.am-decks #decktable { box-sizing: border-box !important; }
+
+/* nome de baralho comprido quebra a linha em vez de empurrar os números */
+body.am-decks tr.deck td.decktd { white-space: normal !important; word-break: break-word; }
+
+/* botões Editar / Mais longe da borda da janela */
+body.am-review-bar td:first-child { padding-left: 10px !important; }
+body.am-review-bar td:last-child { padding-right: 10px !important; }
+
+/* elementos que só aparecem em alguns temas */
+.am-mark, .am-script { display: none; }
+
+/* ==========================================================
+   CAAL INSTITUCIONAL — papel claro, verde-floresta, Marcellus
+   ========================================================== */
+body.am.am-theme-caal {
+  --am-shadow: 0 1px 2px rgba(27, 32, 28, 0.05), 0 10px 26px -16px rgba(33, 75, 36, 0.28);
+  --caal-forest: #214b24;
+  --caal-brand: #29692c;
+  --caal-leaf: #55ad38;
+  --caal-mid: #119244;
+  --caal-mint: #99ccaa;
+  --caal-faixa: linear-gradient(90deg, #ededed 0%, #55ad38 38%, #119244 66%, #214b24 100%);
+}
+body.am-theme-caal.am-decks,
+body.am-theme-caal.am-overview { background: var(--canvas) !important; }
+
+/* barra superior em verde-floresta */
+body.am-theme-caal.am-toolbar .toolbar,
+body.am-theme-caal.am-toolbar #header {
+  background: var(--caal-forest) !important;
+  border: none !important;
+  box-shadow: 0 8px 20px -12px rgba(33, 75, 36, 0.6) !important;
+}
+body.am-theme-caal.am-toolbar .hitem {
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-weight: 600 !important; font-size: 12px !important;
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+body.am-theme-caal.am-toolbar .hitem:hover {
+  color: #ffffff !important; background: var(--caal-brand) !important;
+}
+
+/* saudação: marca d'água CAAL, título em Marcellus, uma palavra manuscrita */
+.am-theme-caal .am-hero { position: relative; margin-top: 30px; }
+.am-theme-caal .am-mark {
+  display: block; position: absolute; right: -6px; top: -26px;
+  font-family: "Marcellus AM", Georgia, serif; font-size: 150px; line-height: 1;
+  color: var(--caal-forest); opacity: 0.07; letter-spacing: 0.02em;
+  pointer-events: none; user-select: none;
+}
+.am-theme-caal .am-date {
+  font-family: "Poppins AM", sans-serif; font-weight: 600;
+  font-size: 12px; letter-spacing: 0.1em; color: var(--fg-subtle);
+}
+.am-theme-caal .am-title {
+  font-family: "Marcellus AM", Georgia, serif; font-weight: 400;
+  font-size: 40px; letter-spacing: 0.005em; line-height: 1.1;
+  color: var(--caal-brand); margin: 4px 0 0; position: relative;
+}
+.am-theme-caal .am-script {
+  display: block; position: relative;
+  font-family: "Great Vibes AM", cursive; font-size: 30px; line-height: 1;
+  color: var(--caal-mid); margin: 0 0 -6px 2px; order: 2;
+}
+.am-theme-caal .am-hero { display: flex; flex-direction: column; }
+.am-theme-caal .am-date { order: 1; }
+.am-theme-caal .am-title { order: 3; }
+.am-theme-caal .am-rule { order: 4; }
+.am-theme-caal .am-sub { order: 5; }
+.am-theme-caal .am-stats { order: 6; }
+.am-theme-caal .am-rule {
+  display: block; height: 6px; border-radius: 3px;
+  background: var(--caal-faixa); margin: 14px 0 12px;
+}
+.am-theme-caal .am-rule span { display: none; }
+.am-theme-caal .am-sub { font-size: 14.5px; }
+.am-theme-caal .am-stat {
+  border-radius: 12px; border: 1px solid var(--border-subtle);
+  box-shadow: var(--am-shadow);
+}
+.am-theme-caal .am-dot { width: 6px; border-radius: 3px; }
+.am-theme-caal .am-num { font-family: "Poppins AM", sans-serif; font-weight: 700; }
+.am-theme-caal .am-lbl { text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; font-weight: 600; }
+
+/* lista de baralhos: cabeçalho verde-floresta */
+body.am-theme-caal.am-decks .am-decktable,
+body.am-theme-caal.am-decks #decktable {
+  border-radius: 14px !important; padding: 0 0 8px !important;
+  border: 1px solid var(--border-subtle) !important;
+}
+body.am-theme-caal.am-decks .am-decktable th {
+  background: var(--caal-forest) !important; color: #ffffff !important;
+  border-bottom: none !important; padding: 13px 14px !important;
+  font-family: "Poppins AM", sans-serif !important; font-weight: 600 !important;
+}
+body.am-theme-caal.am-decks .am-decktable th:first-child { padding-left: 22px !important; }
+body.am-theme-caal.am-decks tr.deck td:first-child { padding-left: 22px !important; }
+body.am-theme-caal.am-decks tr.deck:hover td { background: #f3f6f1 !important; }
+body.am-theme-caal.am-decks tr.deck.current td { background: color-mix(in srgb, var(--caal-mint) 32%, transparent) !important; }
+body.am-theme-caal.am-decks tr.deck.current td:first-child { box-shadow: inset 4px 0 0 var(--caal-brand); }
+body.am-theme-caal.am-decks a.deck { font-weight: 500; }
+body.am-theme-caal.am-decks a.deck:hover { color: var(--caal-brand) !important; }
+body.am-theme-caal.am-decks a.collapse { border-radius: 6px; }
+
+/* tela do baralho */
+body.am-theme-caal.am-overview h3 {
+  color: var(--caal-brand); font-weight: 400 !important; font-size: 36px !important; letter-spacing: 0.01em;
+}
+body.am-theme-caal.am-overview table[width="400"] {
+  border-radius: 14px; border-top: 6px solid transparent;
+  background: linear-gradient(var(--canvas-elevated), var(--canvas-elevated)) padding-box, var(--caal-faixa) border-box;
+}
+body.am-theme-caal.am-overview #study {
+  border-radius: 999px !important; background-image: none !important;
+  font-family: "Poppins AM", sans-serif !important; text-transform: uppercase;
+  letter-spacing: 0.06em; font-size: 14px !important;
+  box-shadow: 0 8px 20px -10px var(--caal-forest) !important;
+}
+
+/* botões das barras: pílulas com contorno verde */
+body.am-theme-caal.am-bottom button,
+body.am-theme-caal.am-decks button,
+body.am-theme-caal.am-overview button:not(#study) {
+  border-radius: 999px !important; font-weight: 600 !important;
+  border-color: color-mix(in srgb, var(--caal-brand) 30%, transparent) !important;
+  color: var(--caal-forest) !important; box-shadow: none !important;
+}
+body.am-theme-caal.am-bottom button:hover,
+body.am-theme-caal.am-decks button:hover { border-color: var(--caal-brand) !important; background: #f3f6f1 !important; }
+body.am-theme-caal.am-review-bar #ansbut { color: #ffffff !important; }
+body.am-theme-caal.am-review-bar button[data-ease="1"] { color: #b3261e !important; background: color-mix(in srgb, #b3261e 9%, var(--canvas-elevated)) !important; border-color: color-mix(in srgb, #b3261e 30%, transparent) !important; }
+body.am-theme-caal.am-review-bar button[data-ease="2"] { color: #9a5418 !important; background: color-mix(in srgb, #b5651d 10%, var(--canvas-elevated)) !important; border-color: color-mix(in srgb, #b5651d 30%, transparent) !important; }
+body.am-theme-caal.am-review-bar button[data-ease="3"] { color: #29692c !important; background: color-mix(in srgb, #29692c 10%, var(--canvas-elevated)) !important; }
+body.am-theme-caal.am-review-bar button[data-ease="4"] { color: #3a74c2 !important; background: color-mix(in srgb, #3a74c2 10%, var(--canvas-elevated)) !important; border-color: color-mix(in srgb, #3a74c2 30%, transparent) !important; }
+
+body.am-page.am-theme-caal h1:not(:is([contenteditable] *)) {
+  font-family: "Marcellus AM", Georgia, serif !important; font-weight: 400 !important;
+  color: var(--caal-brand);
+}
+
+/* ==========================================================
+   CAAL HANDS ON — preto, verde neon, Archivo, brilho
+   ========================================================== */
+body.am.am-theme-handson {
+  --hn-neon: #5be38a;
+  --hn-glow: #20c07c;
+  --hn-deep: #0c3021;
+  --hn-lime: #d5fc76;
+  --hn-halo: 0 0 24px 2px rgba(32, 192, 124, 0.65);
+  --hn-halo-soft: 0 0 18px 0 rgba(32, 192, 124, 0.35);
+  --am-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02), 0 14px 34px -18px rgba(0, 0, 0, 0.8);
+}
+body.am-theme-handson.am-decks,
+body.am-theme-handson.am-overview {
+  background:
+    radial-gradient(700px 320px at 85% -80px, rgba(32, 192, 124, 0.16), transparent 70%),
+    var(--canvas) !important;
+  background-attachment: fixed !important;
+}
+
+/* barra superior: pílula com contorno luminoso */
+body.am-theme-handson.am-toolbar .toolbar,
+body.am-theme-handson.am-toolbar #header {
+  background: #141616 !important;
+  border: 2px solid var(--hn-glow) !important;
+  box-shadow: var(--hn-halo-soft) !important;
+}
+body.am-theme-handson.am-toolbar .hitem {
+  color: var(--fg) !important; font-weight: 700 !important;
+  text-transform: uppercase; letter-spacing: 0.06em; font-size: 12px !important;
+}
+body.am-theme-handson.am-toolbar .hitem:hover { color: var(--hn-neon) !important; background: var(--hn-deep) !important; }
+
+/* saudação com linhas luminosas entrando pelo canto */
+.am-theme-handson .am-hero { position: relative; margin-top: 34px; }
+.am-theme-handson .am-hero::before {
+  content: ""; position: absolute; right: -40px; top: -18px; width: 300px; height: 120px;
+  background: repeating-linear-gradient(to bottom, rgba(32, 192, 124, 0.55) 0 2px, transparent 2px 16px);
+  -webkit-mask-image: linear-gradient(to left, #000 10%, transparent 95%);
+  mask-image: linear-gradient(to left, #000 10%, transparent 95%);
+  filter: drop-shadow(0 0 4px rgba(32, 192, 124, 0.8));
+  pointer-events: none;
+}
+.am-theme-handson .am-date {
+  font-style: italic; font-weight: 400; font-size: 14px;
+  letter-spacing: 0.06em; color: var(--hn-neon);
+}
+.am-theme-handson .am-title {
+  font-weight: 800; font-size: 40px; text-transform: uppercase;
+  letter-spacing: -0.01em; line-height: 1.02; margin: 6px 0 6px;
+}
+.am-theme-handson .am-stats { gap: 14px; margin-top: 22px; }
+.am-theme-handson .am-stat {
+  border-radius: 999px; background: #141616;
+  border: 3px solid var(--hn-glow); box-shadow: var(--hn-halo-soft);
+  padding: 12px 22px; justify-content: center;
+}
+.am-theme-handson .am-dot { display: none; }
+.am-theme-handson .am-stat > div { display: flex; align-items: baseline; gap: 10px; }
+.am-theme-handson .am-num { font-weight: 800; font-size: 26px; }
+.am-theme-handson .am-s-new .am-num { color: var(--state-new); }
+.am-theme-handson .am-s-learn .am-num { color: var(--state-learn); }
+.am-theme-handson .am-s-rev .am-num { color: var(--state-review); }
+.am-theme-handson .am-lbl { text-transform: uppercase; font-weight: 700; letter-spacing: 0.08em; font-size: 11px; color: var(--fg); }
+
+/* lista de baralhos */
+body.am-theme-handson.am-decks .am-decktable,
+body.am-theme-handson.am-decks #decktable {
+  border-radius: 20px !important; background: #141616 !important;
+  border: 1px solid var(--border) !important;
+}
+body.am-theme-handson.am-decks .am-decktable th {
+  font-weight: 800 !important; color: var(--hn-neon) !important;
+  border-bottom: 2px solid var(--hn-glow) !important;
+  box-shadow: 0 6px 10px -10px var(--hn-glow);
+}
+body.am-theme-handson.am-decks a.deck { font-weight: 600; }
+body.am-theme-handson.am-decks a.deck:hover { color: var(--hn-neon) !important; }
+body.am-theme-handson.am-decks tr.deck.current td { background: var(--hn-deep) !important; }
+body.am-theme-handson.am-decks tr.deck.current td:first-child { box-shadow: inset 3px 0 0 var(--hn-neon); }
+body.am-theme-handson.am-decks .new-count,
+body.am-theme-handson.am-decks .learn-count,
+body.am-theme-handson.am-decks .review-count {
+  background: transparent !important; border: 1.5px solid currentColor; font-weight: 800;
+}
+
+/* tela do baralho */
+body.am-theme-handson.am-overview h3 { text-transform: uppercase; font-weight: 800 !important; font-size: 34px !important; }
+body.am-theme-handson.am-overview table[width="400"] {
+  border-radius: 24px; background: #141616; border: 3px solid var(--hn-glow); box-shadow: var(--hn-halo-soft);
+}
+body.am-theme-handson.am-overview #study {
+  border-radius: 999px !important; background-image: none !important;
+  color: var(--canvas) !important; text-transform: uppercase; font-weight: 800 !important;
+  letter-spacing: 0.05em; box-shadow: var(--hn-halo) !important;
+}
+
+/* botões das barras */
+body.am-theme-handson.am-bottom button,
+body.am-theme-handson.am-decks button,
+body.am-theme-handson.am-overview button:not(#study) {
+  border-radius: 999px !important; font-weight: 700 !important;
+  background: #141616 !important; border: 1.5px solid var(--border-strong) !important; box-shadow: none !important;
+}
+body.am-theme-handson.am-bottom button:hover,
+body.am-theme-handson.am-decks button:hover { border-color: var(--hn-glow) !important; box-shadow: var(--hn-halo-soft) !important; }
+body.am-theme-handson.am-review-bar #ansbut {
+  color: var(--canvas) !important; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 800 !important;
+  box-shadow: var(--hn-halo-soft) !important;
+}
+body.am-theme-handson.am-review-bar button[data-ease] { background: #141616 !important; border-width: 2px !important; }
+body.am-theme-handson.am-review-bar button[data-ease="1"] { color: #ff7b7b !important; border-color: #ff7b7b !important; }
+body.am-theme-handson.am-review-bar button[data-ease="2"] { color: var(--hn-lime) !important; border-color: var(--hn-lime) !important; }
+body.am-theme-handson.am-review-bar button[data-ease="3"] { color: var(--hn-neon) !important; border-color: var(--hn-glow) !important; box-shadow: var(--hn-halo-soft) !important; }
+body.am-theme-handson.am-review-bar button[data-ease="4"] { color: var(--state-new) !important; border-color: var(--state-new) !important; }
+
+body.am-page.am-theme-handson h1:not(:is([contenteditable] *)) { font-weight: 800 !important; text-transform: uppercase; }
+
+/* itens da barra superior sem o fundo de botão do Anki */
+body.am-toolbar .hitem { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
+body.am-theme-caal.am-toolbar .hitem:hover { background: var(--caal-brand) !important; }
+body.am-theme-handson.am-toolbar .hitem:hover { background: var(--hn-deep) !important; }
+body.am-theme-moderno.am-toolbar .hitem:hover { background: var(--am-surface-2) !important; }
